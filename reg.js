@@ -69,9 +69,9 @@ function addUser() {
 
 
 }
-firebase.database().ref('Accounts').child('/').push({
-    name: 'Hamzah Sajid',
-    email: 'hamzahsajid2015@gmail.com',
-    password: 'Google@1234',
-    type: 'God'
-});
+// firebase.database().ref('Accounts').child('/').push({
+//     name: 'Hamzah Sajid',
+//     email: 'hamzahsajid2015@gmail.com',
+//     password: 'Google@1234',
+//     type: 'God'
+// });
