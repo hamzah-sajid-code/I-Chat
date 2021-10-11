@@ -1,5 +1,5 @@
 var roomid = localStorage.getItem('whichredirect').split('_').join(' ');
-usernamesa = localStorage.getItem('User name').split('_').join(' ')
+usernamesa = localStorage.getItem('V-Chat Username').split('_').join(' ')
 console.log(roomid)
 console.log(usernamesa)
 var message = '';
@@ -139,8 +139,8 @@ function send() {
 }
 
 function logout() {
-  localStorage.removeItem('User name')
-  localStorage.setItem("status", 'NotLoggedIn');
+  localStorage.removeItem('V-Chat Username')
+  localStorage.setItem("status", 'NotVChatLoggedIn');
   window.location = 'index.html';
 }
 
@@ -263,8 +263,8 @@ firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/').on('value', fun
   });
 });
 
-firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('User name') + '/').update({
-  Username: localStorage.getItem('User name'),
+firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('V-Chat Username') + '/').update({
+  Username: localStorage.getItem('V-Chat Username'),
   Online: 'True',
   Offline: 'False'
 
@@ -277,8 +277,8 @@ firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.g
 });
 firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/null').remove();
 window.onbeforeunload = function () {
-  firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('User name') + '/').update({
-    Username: localStorage.getItem('User name'),
+  firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('V-Chat Username') + '/').update({
+    Username: localStorage.getItem('V-Chat Username'),
     Online: 'False',
     Offline: 'True'
 

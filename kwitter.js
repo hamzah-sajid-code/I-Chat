@@ -11,8 +11,8 @@ function addUser() {
                 //Start code
                 if (message_data['name'] == namel && message_data['password'] == passwordl) {
                     var user_name = document.getElementById('name').value;
-                    localStorage.setItem('User name', user_name);
-                    localStorage.setItem("status", "LoggedIn");
+                    localStorage.setItem('V-Chat Username', user_name);
+                    localStorage.setItem("status", "VChatLoggedIn");
                     window.location = 'kwitter_room.html';
                 } else {
                     document.getElementById('allLogin').innerHTML = 'Cannot Find This Username or Password';
@@ -26,10 +26,9 @@ function addUser() {
 function reg() {
     window.location = 'register.html';
 }
-if (localStorage.getItem('status') == 'LoggedIn') {
+if (localStorage.getItem('status') == 'VChatVChatLoggedIn') {
     //redirect to page
     window.location = 'kwitter_room.html';
-} else if (localStorage.getItem('status') == 'NotLoggedIn') {
-    //show validation message
+} else if (localStorage.getItem('status') == 'VChatVChatLoggedIn') {
     console.log("Is Login : False");
 }

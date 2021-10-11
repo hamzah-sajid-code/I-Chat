@@ -41,7 +41,7 @@ function addUser() {
             if (username != message_data['name'] && email != message_data['email']) {
                 if (password.length > 6 || password.length == 6) {
                     if (password != '' && username != '' && email != '') {
-                        localStorage.setItem('User name', username);
+                        localStorage.setItem('V-Chat Username', username);
                         firebase.database().ref('Accounts').child('/').push({
                             name: username,
                             email: email,

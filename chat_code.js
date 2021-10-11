@@ -1,5 +1,5 @@
 roomid = localStorage.getItem('whichredirect').split('_').join(' ');
-usernamesa = localStorage.getItem('User name')
+usernamesa = localStorage.getItem('V-Chat Username')
 console.log(roomid)
 console.log(usernamesa)
 var message = '';
@@ -30,6 +30,7 @@ function getData() {
         name = message_data['name'];
         message = message_data['message'];
         like = message_data['like'];
+        type = message_data['type'];
         if (name == usernamesa) {
           // start
           if (message_data['type'] == 'Msg') {
@@ -151,8 +152,8 @@ function send() {
 }
 
 function logout() {
-  localStorage.removeItem('User name')
-  localStorage.setItem("status", 'NotLoggedIn');
+  localStorage.removeItem('V-Chat Username')
+  localStorage.setItem("status", 'NotVChatLoggedIn');
   window.location = 'index.html';
 }
 
@@ -284,16 +285,16 @@ firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/').on('value', fun
   });
 });
 
-firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('User name') + '/').update({
-  Username: localStorage.getItem('User name'),
+firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('V-Chat Username') + '/').update({
+  Username: localStorage.getItem('V-Chat Username'),
   Online: 'True',
   Offline: 'False'
 
 });
 firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/null').remove();
 window.onbeforeunload = function () {
-  firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('User name') + '/').update({
-    Username: localStorage.getItem('User name'),
+  firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('V-Chat Username') + '/').update({
+    Username: localStorage.getItem('V-Chat Username'),
     Online: 'False',
     Offline: 'True'
 
@@ -352,7 +353,7 @@ firebase.database().ref('/chat/' + localStorage.getItem("roomname") + '/').on('v
       //Start code
       console.log(firebase_message_id)
       console.log(message_data)
-      if (message_data == localStorage.getItem('User name')) {
+      if (message_data == localStorage.getItem('V-Chat Username')) {
         document.getElementById("delBtn").style.display = "inline-block"
       }
       //End code

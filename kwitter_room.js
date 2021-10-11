@@ -1,4 +1,4 @@
-namee = localStorage.getItem('User name');
+namee = localStorage.getItem('V-Chat Username');
 var ppN = document.getElementById('pp').value;
 console.log(ppN)
 var fns = '';
@@ -7,8 +7,8 @@ document.getElementById('name').innerHTML = namee;
 var gotFriendToAccept = '';
 
 function logout() {
-      localStorage.removeItem('User name')
-      localStorage.setItem("status", 'NotLoggedIn');
+      localStorage.removeItem('V-Chat Username')
+      localStorage.setItem("status", 'NotVChatLoggedIn');
       window.location = 'index.html';
 }
 
@@ -32,7 +32,7 @@ function addRoom() {
             } else {
                   console.log('This is private room')
                   roomname = document.getElementById('id_room').value;
-                  usernumm = localStorage.getItem('User name')
+                  usernumm = localStorage.getItem('V-Chat Username')
                   localStorage.setItem(roomname, roomname);
                   firebase.database().ref('/pass').child(roomname).update({
                         'Room Name': roomname,
@@ -41,7 +41,7 @@ function addRoom() {
                   console.log('This is private room')
                   roomname = document.getElementById('id_room').value;
 
-                  usernumm = localStorage.getItem('User name')
+                  usernumm = localStorage.getItem('V-Chat Username')
                   localStorage.setItem(roomname, roomname);
                   firebase.database().ref('/pus').child(roomname).update({
                         'Password': pus
@@ -332,16 +332,16 @@ firebase.database().ref('/OnlineorOfflineStatus' + "lobby" + '/').on('value', fu
       });
 });
 
-firebase.database().ref('/OnlineorOfflineStatus' + "lobby" + '/' + localStorage.getItem('User name') + '/').update({
-      Username: localStorage.getItem('User name'),
+firebase.database().ref('/OnlineorOfflineStatus' + "lobby" + '/' + localStorage.getItem('V-Chat Username') + '/').update({
+      Username: localStorage.getItem('V-Chat Username'),
       Online: 'True',
       Offline: 'False'
 
 });
 firebase.database().ref('/OnlineorOfflineStatus' + "lobby" + '/null').remove();
 window.onbeforeunload = function () {
-      firebase.database().ref('/OnlineorOfflineStatus' + "lobby" + '/' + localStorage.getItem('User name') + '/').update({
-            Username: localStorage.getItem('User name'),
+      firebase.database().ref('/OnlineorOfflineStatus' + "lobby" + '/' + localStorage.getItem('V-Chat Username') + '/').update({
+            Username: localStorage.getItem('V-Chat Username'),
             Online: 'False',
             Offline: 'True'
 
