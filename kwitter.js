@@ -26,9 +26,11 @@ function addUser() {
 function reg() {
     window.location = 'register.html';
 }
-if (localStorage.getItem('status') == 'VChatVChatLoggedIn') {
+
+
+if (localStorage.getItem('status') == 'VChatLoggedIn') {
     //redirect to page
     window.location = 'kwitter_room.html';
-} else if (localStorage.getItem('status') == 'VChatVChatLoggedIn') {
+} else if (localStorage.getItem('status') == 'VChatLoggedIn') {
     console.log("Is Login : False");
 }

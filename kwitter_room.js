@@ -359,7 +359,6 @@ function closeNav() {
 }
 
 firebase.database().ref("/Accounts").on('value', function (snapshot) {
-      document.getElementById("output").innerHTML = "";
       snapshot.forEach(function (childSnapshot) {
         childKey = childSnapshot.key;
         childData = childSnapshot.val();

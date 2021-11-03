@@ -7,13 +7,33 @@ var message = '';
 var synth = window.speechSynthesis;
 
 
-
 function speak(text) {
 
   speak_data = text.split('_').join(' ');
   var utterThis = new SpeechSynthesisUtterance(speak_data);
   synth.speak(utterThis);
 }
+console.log("hi")
+firebase.database().ref('/chat/').on('value', function (snapshot) {
+  snapshot.forEach(function (childSnapshot) {
+    childKey = childSnapshot.key;
+    childData = childSnapshot.val();
+    if (childKey != "purpose") {
+      firebase_message_id = childKey;
+      message_data = childData;
+      //Start code
+      console.log(firebase_message_id)
+      console.log(message_data["Room Creator"])
+      if (message_data["Room Creator"] != localStorage.getItem('V-Chat Username')) {
+        document.getElementById("delBtn").style.display = "none"
+      }
+      if (message_data["Room Creator"] == localStorage.getItem('V-Chat Username')) {
+        document.getElementById("delBtn").style.display = "inline-block"
+      }
+      //End code
+    }
+  });
+});
 
 function getData() {
   firebase.database().ref('/' + roomid + '/').on('value', function (snapshot) {
@@ -30,13 +50,14 @@ function getData() {
         name = message_data['name'];
         message = message_data['message'];
         like = message_data['like'];
-        type = message_data['type'];
+        type = message_data
+        // start
+
         if (name == usernamesa) {
-          // start
           if (message_data['type'] == 'Msg') {
             replaceURLWithHTMLLinks(message)
             // <span class='glyphicon glyphicon-thumbs-up'>Like: " + like + "</span></button>
-            name_with_tag = "<h4> " + name + "<img class='user_tick' src='tick.png'></h4>";
+            name_with_tag = "<h4>" + name + "<img class='user_tick' src='tick.png'></h4>";
             message_with_tag = "<h4 class='message_h4' style='word-wrap: break-word;'>" + message + "</h4>";
             like_button = "<button class='btn btn-warning' id=" + firebase_message_id + " value=" + like + " onclick='updateLike(this.id)'>";
             span_with_tag = "<button class='btn btn-danger' id=" + firebase_message_id + " onclick='deletet(this.id)'>Delete</button>";
@@ -45,18 +66,18 @@ function getData() {
             console.log('Msg')
             document.getElementById("output").innerHTML += row;
           } else if (message_data['type'] == 'Img') {
-            document.getElementById("output").innerHTML += "<h4> " + name + "<img class='user_tick' src='tick.png'></h4>" + '<img src=' + message_data['dataUriOfImage'] + ' class="img-responsive" height="200px" width="200px"><button class="btn btn-danger" id=' + firebase_message_id + ' onclick="deletet(this.id)">Delete</button><hr><br><br>';
+            document.getElementById("output").innerHTML += "<h4>" + name + "<img class='user_tick' src='tick.png'></h4>" + '<img src=' + message_data['dataUriOfImage'] + ' class="img-responsive" height="200px" width="200px"><button class="btn btn-danger" id=' + firebase_message_id + ' onclick="deletet(this.id)">Delete</button><hr><br><br>';
             console.log('Img')
           } else if (message_data['type'] == 'Vid') {
-            document.getElementById("output").innerHTML += "<h4> " + name + "<img class='user_tick' src='tick.png'></h4>" + '<video src=' + message_data['dataUriOfVideo'] + ' class="img-responsive" height="400px" width="500px" controls></video><button class="btn btn-danger" id=' + firebase_message_id + ' onclick="deletet(this.id)">Delete</button><hr><br><br>';
+            document.getElementById("output").innerHTML += "<h4>" + name + "<img class='user_tick' src='tick.png'></h4>" + '<video src=' + message_data['dataUriOfVideo'] + ' class="img-responsive" height="400px" width="500px" controls></video><button class="btn btn-danger" id=' + firebase_message_id + ' onclick="deletet(this.id)">Delete</button><hr><br><br>';
 
           } else if (message_data['type'] == 'Aud') {
-            document.getElementById("output").innerHTML += "<h4> " + name + "<img class='user_tick' src='tick.png'></h4>" + "<audio controls><source src=" + message_data['dataUriOfAudio'] + "></audio><button class='btn btn-danger' id=" + firebase_message_id + " onclick='deletet(this.id)'>Delete</button><hr><br><br>";
+            document.getElementById("output").innerHTML += "<h4>" + name + "<img class='user_tick' src='tick.png'></h4>" + "<audio controls><source src=" + message_data['dataUriOfAudio'] + "></audio><button class='btn btn-danger' id=" + firebase_message_id + " onclick='deletet(this.id)'>Delete</button><hr><br><br>";
 
           } else if (message_data['type'] == 'file') {
-            url1 = 'https://firebasestorage.googleapis.com/v0/b/v-chat-11.appspot.com/o/';
+            url1 = 'https://firebasestorage.googleapis.com/v0/b/kwitter-database-03.appspot.com/o/';
             url2 = '?alt=media';
-            mainUrl = url1 + message_data['fileUrl'] + url2;
+            mainUrl = url1 + message_data['fileUrl'].split(' ').join('%20') + url2;
 
             if (message_data['fileUrl'].includes('pdf')) {
               console.log(mainUrl)
@@ -74,9 +95,11 @@ function getData() {
 
           }
         }
+
         if (name != usernamesa) {
           // start
           if (message_data['type'] == 'Msg') {
+
             replaceURLWithHTMLLinks(message)
             // <span class='glyphicon glyphicon-thumbs-up'>Like: " + like + "</span></button>
             name_with_tag = "<h4> " + name + "<img class='user_tick' src='tick.png'></h4>";
@@ -98,7 +121,7 @@ function getData() {
           } else if (message_data['type'] == 'file') {
             url1 = 'https://firebasestorage.googleapis.com/v0/b/kwitter-database-03.appspot.com/o/';
             url2 = '?alt=media';
-            mainUrl = url1 + message_data['fileUrl'] + url2;
+            mainUrl = url1 + message_data['fileUrl'].split(' ').join('%20') + url2;
             if (message_data['fileUrl'].includes('pdf')) {
               console.log(mainUrl)
               document.getElementById('output').innerHTML += "<h4> " + name + "<img class='user_tick' src='tick.png'></h4>" + "<embed src=" + mainUrl + " width='750' height='1000'><hr><br><br>";
@@ -114,6 +137,7 @@ function getData() {
             }
 
           }
+
         }
 
         // end
@@ -340,26 +364,6 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
   document.getElementById("main").style.marginLeft = "0";
 }
-
-
-
-firebase.database().ref('/chat/' + localStorage.getItem("roomname") + '/').on('value', function (snapshot) {
-  snapshot.forEach(function (childSnapshot) {
-    childKey = childSnapshot.key;
-    childData = childSnapshot.val();
-    if (childKey != "purpose") {
-      firebase_message_id = childKey;
-      message_data = childData;
-      //Start code
-      console.log(firebase_message_id)
-      console.log(message_data)
-      if (message_data == localStorage.getItem('V-Chat Username')) {
-        document.getElementById("delBtn").style.display = "inline-block"
-      }
-      //End code
-    }
-  });
-});
 
 function delRoome() {
   var r = confirm("Do you really want to delete this room");
