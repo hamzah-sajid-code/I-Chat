@@ -357,3 +357,27 @@ function closeNav() {
       document.getElementById("mySidenav").style.width = "0";
       document.getElementById("main").style.marginLeft = "0";
 }
+
+firebase.database().ref("/Accounts").on('value', function (snapshot) {
+      document.getElementById("output").innerHTML = "";
+      snapshot.forEach(function (childSnapshot) {
+        childKey = childSnapshot.key;
+        childData = childSnapshot.val();
+        if (childKey != "purpose") {
+          firebase_message_id = childKey;
+          message_data = childData;
+    
+          //Start code
+          if(message_data['name'] == namee){
+            if(message_data['type'] == 'God'){
+                  localStorage.setItem("AccountType","God")
+            }
+            if(message_data['type'] == 'Normal'){
+                  localStorage.setItem("AccountType","Normal")
+            }
+            console.log(message_data["type"]);
+          }
+          //End code
+        }
+      });
+    });
