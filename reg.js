@@ -48,7 +48,9 @@ function addUser() {
                             password: password,
                             type: 'Normal'
                         });
-                        window.location = 'index.html';
+                        localStorage.setItem('V-Chat Username', username);
+                        localStorage.setItem("status", "VChatLoggedIn");
+                        window.location = 'kwitter_room.html';
                     }
                 }
             } else if (username == allAccountNames[i]) {

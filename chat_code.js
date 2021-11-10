@@ -75,7 +75,7 @@ function getData() {
             document.getElementById("output").innerHTML += "<h4>" + name + "<img class='user_tick' src='tick.png'></h4>" + "<audio controls><source src=" + message_data['dataUriOfAudio'] + "></audio><button class='btn btn-danger' id=" + firebase_message_id + " onclick='deletet(this.id)'>Delete</button><hr><br><br>";
 
           } else if (message_data['type'] == 'file') {
-            url1 = 'https://firebasestorage.googleapis.com/v0/b/kwitter-database-03.appspot.com/o/';
+            url1 = 'https://firebasestorage.googleapis.com/v0/b/i-chat-8b853.appspot.com/o/';
             url2 = '?alt=media';
             mainUrl = url1 + message_data['fileUrl'].split(' ').join('%20') + url2;
 
@@ -119,7 +119,7 @@ function getData() {
             document.getElementById("output").innerHTML += "<h4> " + name + "<img class='user_tick' src='tick.png'></h4>" + "<audio controls><source src=" + message_data['dataUriOfAudio'] + "></audio><hr><br><br>";
 
           } else if (message_data['type'] == 'file') {
-            url1 = 'https://firebasestorage.googleapis.com/v0/b/kwitter-database-03.appspot.com/o/';
+            url1 = 'https://firebasestorage.googleapis.com/v0/b/i-chat-8b853.appspot.com/o/';
             url2 = '?alt=media';
             mainUrl = url1 + message_data['fileUrl'].split(' ').join('%20') + url2;
             if (message_data['fileUrl'].includes('pdf')) {
