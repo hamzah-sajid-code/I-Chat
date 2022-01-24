@@ -31,7 +31,6 @@ function addUser() {
     username = document.getElementById('name').value;
     email = document.getElementById('email').value;
     password = document.getElementById('password').value;
-
     for (i = 0; i < allAccountNames.length; i++) {
         for (j = 0; j < allAccountEmails.length; j++) {
             console.log(allAccountEmails[j]);
@@ -41,14 +40,14 @@ function addUser() {
             if (username != message_data['name'] && email != message_data['email']) {
                 if (password.length > 6 || password.length == 6) {
                     if (password != '' && username != '' && email != '') {
-                        localStorage.setItem('V-Chat Username', username);
+                        localStorage.setItem('I-Chat Username', username);
                         firebase.database().ref('Accounts').child('/').push({
                             name: username,
                             email: email,
                             password: password,
                             type: 'Normal'
                         });
-                        localStorage.setItem('V-Chat Username', username);
+                        localStorage.setItem('I-Chat Username', username);
                         localStorage.setItem("status", "VChatLoggedIn");
                         window.location = 'kwitter_room.html';
                     }
@@ -71,9 +70,32 @@ function addUser() {
 
 
 }
+
 // firebase.database().ref('Accounts').child('/').push({
 //     name: 'Hamzah Sajid',
 //     email: 'hamzahsajid2015@gmail.com',
 //     password: 'Google@1234',
 //     type: 'God'
 // });
+
+// For Realtime Database
+
+/* 
+Test Mode Rules
+{
+  "rules": {
+    ".read": "now < 1645563600000",  // 2022-2-23
+    ".write": "now < 1645563600000",  // 2022-2-23
+  }
+}
+*/
+
+/*
+Locked Mode rules
+{
+  "rules": {
+    ".read": false,
+    ".write": false
+  }
+}
+*/

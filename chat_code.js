@@ -1,5 +1,5 @@
 roomid = localStorage.getItem('whichredirect').split('_').join(' ');
-usernamesa = localStorage.getItem('V-Chat Username')
+usernamesa = localStorage.getItem('I-Chat Username')
 console.log(roomid)
 console.log(usernamesa)
 var message = '';
@@ -24,10 +24,10 @@ firebase.database().ref('/chat/').on('value', function (snapshot) {
       //Start code
       console.log(firebase_message_id)
       console.log(message_data["Room Creator"])
-      if (message_data["Room Creator"] != localStorage.getItem('V-Chat Username')) {
+      if (message_data["Room Creator"] != localStorage.getItem('I-Chat Username')) {
         document.getElementById("delBtn").style.display = "none"
       }
-      if (message_data["Room Creator"] == localStorage.getItem('V-Chat Username')) {
+      if (message_data["Room Creator"] == localStorage.getItem('I-Chat Username')) {
         document.getElementById("delBtn").style.display = "inline-block"
       }
       //End code
@@ -75,10 +75,10 @@ function getData() {
             document.getElementById("output").innerHTML += "<h4>" + name + "<img class='user_tick' src='tick.png'></h4>" + "<audio controls><source src=" + message_data['dataUriOfAudio'] + "></audio><button class='btn btn-danger' id=" + firebase_message_id + " onclick='deletet(this.id)'>Delete</button><hr><br><br>";
 
           } else if (message_data['type'] == 'file') {
-            url1 = 'https://firebasestorage.googleapis.com/v0/b/i-chat-8b853.appspot.com/o/';
+            url1 = 'https://firebasestorage.googleapis.com/v0/b/i-chat-database.appspot.com/o/';
             url2 = '?alt=media';
             mainUrl = url1 + message_data['fileUrl'].split(' ').join('%20') + url2;
-
+            console.log(message_data["fileUrl"])
             if (message_data['fileUrl'].includes('pdf')) {
               console.log(mainUrl)
               document.getElementById('output').innerHTML += "<h4> " + name + "<img class='user_tick' src='tick.png'></h4>" + "<embed src=" + mainUrl + " width='750' height='1000'><button class='btn btn-danger' id=" + firebase_message_id + " onclick='deletetfile(this.id)'>Delete</button><hr><br><br>";
@@ -119,9 +119,10 @@ function getData() {
             document.getElementById("output").innerHTML += "<h4> " + name + "<img class='user_tick' src='tick.png'></h4>" + "<audio controls><source src=" + message_data['dataUriOfAudio'] + "></audio><hr><br><br>";
 
           } else if (message_data['type'] == 'file') {
-            url1 = 'https://firebasestorage.googleapis.com/v0/b/i-chat-8b853.appspot.com/o/';
+            url1 = 'https://firebasestorage.googleapis.com/v0/b/i-chat-database.appspot.com/o/';
             url2 = '?alt=media';
             mainUrl = url1 + message_data['fileUrl'].split(' ').join('%20') + url2;
+            console.log(message_data)
             if (message_data['fileUrl'].includes('pdf')) {
               console.log(mainUrl)
               document.getElementById('output').innerHTML += "<h4> " + name + "<img class='user_tick' src='tick.png'></h4>" + "<embed src=" + mainUrl + " width='750' height='1000'><hr><br><br>";
@@ -176,7 +177,7 @@ function send() {
 }
 
 function logout() {
-  localStorage.removeItem('V-Chat Username')
+  localStorage.removeItem('I-Chat Username')
   localStorage.setItem("status", 'NotVChatLoggedIn');
   window.location = 'index.html';
 }
@@ -207,13 +208,17 @@ function deletet(message_idd) {
 }
 
 function deletetfile(message_idd) {
-  var result = confirm("Want to delete?");
-  if (result == true) {
-    var w1 = localStorage.getItem('whichredirect').replace('_', '');
-    console.log(w1);
-    firebase.database().ref('/' + w1 + '/' + message_idd).remove();
-  } else if (result == false) {}
 
+  var result = confirm("Want to delete?");
+
+  if (result == true) {
+    if (result == true) {
+      var w1 = localStorage.getItem('whichredirect').replace('_', '');
+      console.log(w1);
+      firebase.database().ref('/' + w1 + '/' + message_idd).remove();
+    } else if (result == false) {}
+
+  }
 }
 
 function back() {
@@ -274,17 +279,19 @@ function getFile() {
   file = document.getElementById("myFile").files[0];
 
   name1 = +new Date() + "-" + file.name;
+
+  const ref = firebase.storage().ref();
+  const metadata = {
+    contentType: file.type
+  };
+  const task = ref.child(name1).put(file, metadata);
   firebase.database().ref('/' + roomid + '/').push({
     fileUrl: name1,
     type: 'file',
     name: usernamesa,
     fileName: file['name']
   });
-  const ref = firebase.storage().ref();
-  const metadata = {
-    contentType: file.type
-  };
-  const task = ref.child(name1).put(file, metadata);
+  setTimeout(() => {location.reload(true);}, 1000);
 }
 firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/').on('value', function (snapshot) {
   document.getElementById("output2").innerHTML = "";
@@ -309,16 +316,16 @@ firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/').on('value', fun
   });
 });
 
-firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('V-Chat Username') + '/').update({
-  Username: localStorage.getItem('V-Chat Username'),
+firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('I-Chat Username') + '/').update({
+  Username: localStorage.getItem('I-Chat Username'),
   Online: 'True',
   Offline: 'False'
 
 });
 firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/null').remove();
 window.onbeforeunload = function () {
-  firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('V-Chat Username') + '/').update({
-    Username: localStorage.getItem('V-Chat Username'),
+  firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('I-Chat Username') + '/').update({
+    Username: localStorage.getItem('I-Chat Username'),
     Online: 'False',
     Offline: 'True'
 

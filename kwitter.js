@@ -11,7 +11,7 @@ function addUser() {
                 //Start code
                 if (message_data['name'] == namel && message_data['password'] == passwordl) {
                     var user_name = document.getElementById('name').value;
-                    localStorage.setItem('V-Chat Username', user_name);
+                    localStorage.setItem('I-Chat Username', user_name);
                     localStorage.setItem("status", "VChatLoggedIn");
                     window.location = 'kwitter_room.html';
                 } else {

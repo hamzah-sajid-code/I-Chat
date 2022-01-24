@@ -1,5 +1,5 @@
 var roomid = localStorage.getItem('whichredirect').split('_').join(' ');
-usernamesa = localStorage.getItem('V-Chat Username').split('_').join(' ')
+usernamesa = localStorage.getItem('I-Chat Username').split('_').join(' ')
 console.log(roomid)
 console.log(usernamesa)
 var message = '';
@@ -41,7 +41,7 @@ function getData() {
             document.getElementById("output").innerHTML += "<h4> " + name + "<img class='user_tick' src='tick.png'></h4>" + "<audio controls><source src=" + message_data['dataUriOfAudio'] + "></audio><button class='btn btn-danger' id=" + firebase_message_id + " onclick='deletet(this.id)'>Delete</button><hr><br><br>";
 
           } else if (message_data['type'] == 'file') {
-            url1 = 'https://firebasestorage.googleapis.com/v0/b/i-chat-8b853.appspot.com/o/';
+            url1 = 'https://firebasestorage.googleapis.com/v0/b/i-chat-database.appspot.com/o/';
             url2 = '?alt=media';
             mainUrl = url1 + message_data['fileUrl'] + url2;
 
@@ -83,7 +83,7 @@ function getData() {
             document.getElementById("output").innerHTML += "<h4> " + name + "<img class='user_tick' src='tick.png'></h4>" + "<audio controls><source src=" + message_data['dataUriOfAudio'] + "></audio><hr><br><br>";
 
           } else if (message_data['type'] == 'file') {
-            url1 = 'https://firebasestorage.googleapis.com/v0/b/i-chat-8b853.appspot.com/o/';
+            url1 = 'https://firebasestorage.googleapis.com/v0/b/i-chat-database.appspot.com/o/';
             url2 = '?alt=media';
             mainUrl = url1 + message_data['fileUrl'] + url2;
             if (message_data['fileUrl'].includes('pdf')) {
@@ -139,7 +139,7 @@ function send() {
 }
 
 function logout() {
-  localStorage.removeItem('V-Chat Username')
+  localStorage.removeItem('I-Chat Username')
   localStorage.setItem("status", 'NotVChatLoggedIn');
   window.location = 'index.html';
 }
@@ -158,16 +158,24 @@ function updateLike(message_id) {
 }
 
 function deletet(message_idd) {
+  var result = confirm("Want to delete?");
+  if (result == true) {
   var w1 = localStorage.getItem('whichredirect').replace('_', '');
   console.log(w1);
   console.log(message_idd);
   firebase.database().ref('/ ' + w1 + '/' + message_idd + '/').remove();
+  } else if (result == false) {}
 }
 
 function deletetfile(message_idd) {
-  var w1 = localStorage.getItem('whichredirect').replace('_', '');
-  console.log(w1);
-  firebase.database().ref('/ ' + w1 + '/' + message_idd).remove();
+  var result = confirm("Want to delete?");
+  if (result == true) {
+    var w1 = localStorage.getItem('whichredirect').replace('_', '');
+    console.log(w1);
+    firebase.database().ref('/ ' + w1 + '/' + message_idd).remove();
+  }
+  else if(result == true){}
+
 }
 
 function back() {
@@ -239,6 +247,7 @@ function getFile() {
     contentType: file.type
   };
   const task = ref.child(name1).put(file, metadata);
+  setTimeout(() => {location.reload(true);}, 1000);
 }
 firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/').on('value', function (snapshot) {
   document.getElementById("output2").innerHTML = "";
@@ -263,8 +272,8 @@ firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/').on('value', fun
   });
 });
 
-firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('V-Chat Username') + '/').update({
-  Username: localStorage.getItem('V-Chat Username'),
+firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('I-Chat Username') + '/').update({
+  Username: localStorage.getItem('I-Chat Username'),
   Online: 'True',
   Offline: 'False'
 
@@ -277,8 +286,8 @@ firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.g
 });
 firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/null').remove();
 window.onbeforeunload = function () {
-  firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('V-Chat Username') + '/').update({
-    Username: localStorage.getItem('V-Chat Username'),
+  firebase.database().ref('/OnlineorOfflineStatus' + roomid + '/' + localStorage.getItem('I-Chat Username') + '/').update({
+    Username: localStorage.getItem('I-Chat Username'),
     Online: 'False',
     Offline: 'True'
 
@@ -322,5 +331,5 @@ function openNav() {
 
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
-  document.getElementById("main").style.marginLeft= "0";
+  document.getElementById("main").style.marginLeft = "0";
 }

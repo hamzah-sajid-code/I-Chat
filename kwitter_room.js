@@ -1,4 +1,4 @@
-namee = localStorage.getItem('V-Chat Username');
+namee = localStorage.getItem('I-Chat Username');
 var ppN = document.getElementById('pp').value;
 console.log(ppN)
 var fns = '';
@@ -7,7 +7,7 @@ document.getElementById('name').innerHTML = namee;
 var gotFriendToAccept = '';
 
 function logout() {
-      localStorage.removeItem('V-Chat Username')
+      localStorage.removeItem('I-Chat Username')
       localStorage.setItem("status", 'NotVChatLoggedIn');
       window.location = 'index.html';
 }
@@ -32,7 +32,7 @@ function addRoom() {
             } else {
                   console.log('This is private room')
                   roomname = document.getElementById('id_room').value;
-                  usernumm = localStorage.getItem('V-Chat Username')
+                  usernumm = localStorage.getItem('I-Chat Username')
                   localStorage.setItem(roomname, roomname);
                   firebase.database().ref('/pass').child(roomname).update({
                         'Room Name': roomname,
@@ -41,7 +41,7 @@ function addRoom() {
                   console.log('This is private room')
                   roomname = document.getElementById('id_room').value;
 
-                  usernumm = localStorage.getItem('V-Chat Username')
+                  usernumm = localStorage.getItem('I-Chat Username')
                   localStorage.setItem(roomname, roomname);
                   firebase.database().ref('/pus').child(roomname).update({
                         'Password': pus
@@ -332,16 +332,16 @@ firebase.database().ref('/OnlineorOfflineStatus' + "lobby" + '/').on('value', fu
       });
 });
 
-firebase.database().ref('/OnlineorOfflineStatus' + "lobby" + '/' + localStorage.getItem('V-Chat Username') + '/').update({
-      Username: localStorage.getItem('V-Chat Username'),
+firebase.database().ref('/OnlineorOfflineStatus' + "lobby" + '/' + localStorage.getItem('I-Chat Username') + '/').update({
+      Username: localStorage.getItem('I-Chat Username'),
       Online: 'True',
       Offline: 'False'
 
 });
 firebase.database().ref('/OnlineorOfflineStatus' + "lobby" + '/null').remove();
 window.onbeforeunload = function () {
-      firebase.database().ref('/OnlineorOfflineStatus' + "lobby" + '/' + localStorage.getItem('V-Chat Username') + '/').update({
-            Username: localStorage.getItem('V-Chat Username'),
+      firebase.database().ref('/OnlineorOfflineStatus' + "lobby" + '/' + localStorage.getItem('I-Chat Username') + '/').update({
+            Username: localStorage.getItem('I-Chat Username'),
             Online: 'False',
             Offline: 'True'
 
@@ -360,23 +360,23 @@ function closeNav() {
 
 firebase.database().ref("/Accounts").on('value', function (snapshot) {
       snapshot.forEach(function (childSnapshot) {
-        childKey = childSnapshot.key;
-        childData = childSnapshot.val();
-        if (childKey != "purpose") {
-          firebase_message_id = childKey;
-          message_data = childData;
-    
-          //Start code
-          if(message_data['name'] == namee){
-            if(message_data['type'] == 'God'){
-                  localStorage.setItem("AccountType","God")
+            childKey = childSnapshot.key;
+            childData = childSnapshot.val();
+            if (childKey != "purpose") {
+                  firebase_message_id = childKey;
+                  message_data = childData;
+
+                  //Start code
+                  if (message_data['name'] == namee) {
+                        if (message_data['type'] == 'God') {
+                              localStorage.setItem("AccountType", "God")
+                        }
+                        if (message_data['type'] == 'Normal') {
+                              localStorage.setItem("AccountType", "Normal")
+                        }
+                        console.log(message_data["type"]);
+                  }
+                  //End code
             }
-            if(message_data['type'] == 'Normal'){
-                  localStorage.setItem("AccountType","Normal")
-            }
-            console.log(message_data["type"]);
-          }
-          //End code
-        }
       });
-    });
+});
