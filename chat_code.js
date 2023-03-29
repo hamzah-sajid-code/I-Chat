@@ -200,7 +200,9 @@ function deletet(message_idd) {
   console.log(message_idd);
   var result = confirm("Want to delete?");
   if (result == true) {
-    var w1 = localStorage.getItem('whichredirect').replace('_', '');
+    console.log(result)
+    var w1 = localStorage.getItem('whichredirect').replace('_', ' ');
+    console.log(w1);
     firebase.database().ref('/' + w1 + '/' + message_idd + '/').remove();
   } else if (result == false) {}
   console.log(result);
